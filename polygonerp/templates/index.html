@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Polygon_ERP</title>
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <div class="dashboard_container" id="dashboard_container">
+        <div class="top_row" id="top_row">
+                <div class="test">
+                    <h1>Polygon_ERP</h1>
+                </div>
+                <div class="test1">
+                    <h2>Apps</h2>
+                    <h2>News</h2>
+                    <h2>About</h2>
+                </div>
+                <div class="test2">
+                    <button class="sign_in_button" onclick="location.href='{{ url_for('auth.login') }}'">Sign In</button>
+                </div>
+    </div>
+
+        </div>
+
+    <div class="row">
+        <h2>Polygon_ERP is a comprehensive ERP solution tailored for small and medium-sized enterprises (SMEs).
+            It streamlines key business processes such as finance, human resources, inventory management, and sales, enabling SMEs to operate efficiently and effectively.
+        </h2>
+    </div>

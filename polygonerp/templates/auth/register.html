@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form class="reg_form" method="post">
+  <div class="form-columns">
+    <!-- Left Column -->
+    <div class="form-column">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input name="username" id="username"  class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input name="name" id="name" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="maiden_name">Maiden Name</label>
+        <input name="maiden_name" id="maiden_name" class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="mothers_name">Mother's name</label>
+        <input name="mothers_name" id="mothers_name" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="pob">Place of Birth</label>
+        <input name="pob" id="pob" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input name="dob" id="dob" required class="form_inp">
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="form-column">
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input name="address" id="address" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="tax_num">Tax Number</label>
+        <input name="tax_num" id="tax_num" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="taj_number">Taj Number</label>
+        <input name="taj_number" id="taj_number" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="job_title">Job Title</label>
+        <input name="job_title" id="job_title" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="base_pay">Base Pay</label>
+        <input name="base_pay" id="base_pay" required class="form_inp">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required class="form_inp">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-submit">
+    <input type="submit" value="Register" class="sign_in_button">
+  </div>
+</form>
+{% endblock %}

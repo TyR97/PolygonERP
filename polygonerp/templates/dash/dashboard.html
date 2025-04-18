@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <body>
+     <div class="welcome_message" id="welcome_message">
+         <h1>Welcome, {{ name }}</h1>
+     </div>
+
+        </div>
+        <div class="middle_row" id="middle_row">
+            <div class="row">
+                <button class="tile" onclick="location.href='{{ url_for('dash.profile_view', user_id=session['id'])}}'" >Profil</button>
+            </div>
+            {% if is_admin %}
+            <div class="row">
+                <button class="tile", onclick="location.href='{{ url_for('auth.register') }}'">Add New Employee</button>
+            </div>
+            {% endif %}
+            <div class="row">
+                <button class="tile">Tile2</button>
+            </div>
+            <div class="row">
+                <button class="tile">Tile3</button>
+            </div>
+            <div class="row">
+                <button class="tile">Tile4</button>
+            </div>
+        </div>
+        <div class="bottom_row" id="bottom_row"></div>
+    </div>
+    </body>
+{% endblock %}

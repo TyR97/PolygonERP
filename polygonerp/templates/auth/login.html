@@ -1,0 +1,35 @@
+{% block content %}
+<html lang="HU">
+  <head>
+    <title>Polygon_ERP</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{#    <link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/x-icon"/>#}
+    <script src="static/js/script.js"></script>
+  </head>
+  <body>
+    <div class="title_row">
+      <h1>Polygon_ERP</h1>
+    </div>
+<div class="container">
+    <div class="sign_in_row">
+        <h2>Login</h2>
+      <form class="sign_in_form" method="POST">
+        <div class="input_group">
+            <label for="username" class="username_label">Username: </label>
+            <input type="text" name="username" id="username" class="form_inp" placeholder="Enter your username">
+        </div>
+        <div class="input_group">
+            <p> </p>
+            <label for="password" class="password_label">Password: </label>
+            <input type="password" name="password" id="password" class="form_inp" placeholder="Enter your password">
+        </div>
+          <p> </p>
+          <button class="sign_in_button" type="submit">Sign In</button>
+      </form>
+    </div>
+    </div>
+  </body>
+</html>
+{% endblock %}
