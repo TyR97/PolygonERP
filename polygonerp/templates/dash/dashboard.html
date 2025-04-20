@@ -16,10 +16,10 @@
             </div>
             {% endif %}
             <div class="row">
-                <button class="tile">Tile2</button>
+                <button class="tile" onclick="location.href='{{ url_for('dash.search_users') }}'">Search Employees</button>
             </div>
             <div class="row">
-                <button class="tile">Tile3</button>
+                <button class="tile" onclick="location.href='{{ url_for('dash.time_log', user_id=session['id']) }}'">Time Sheet</button>
             </div>
             <div class="row">
                 <button class="tile">Tile4</button>

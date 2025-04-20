@@ -31,6 +31,18 @@ blockquote{
 
 }
 
+.feck{
+    border-style: solid;
+    border-color: aquamarine;
+    list-style-type: none;
+    display: flex;
+    padding: 10px;
+    gap:    10px;
+    justify-content: center;
+}
+
+
+
 .test{
     display: flex;
     justify-content: start;

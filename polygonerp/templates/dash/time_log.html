@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Timesheet - {{ dates[0].strftime('%B %Y') }}</h2>
+
+<form method="post">
+  <table border="1">
+    <tr>
+      <th>Date</th>
+      <th>Start</th>
+      <th>Finish</th>
+      <th>Total</th>
+      <th>Type</th>
+    </tr>
+
+    {% for day in dates %}
+    {% set log = logs.get(day) %}
+    <tr>
+      <td>{{ day.strftime('%Y-%m-%d') }}</td>
+      {% set is_editable = day >= current_date %}
+      <td>
+        <input type="time" name="start_{{ day }}" value="{{ log.start_time if log else '' }}" {% if not is_editable %}readonly{% endif %}>
+      </td>
+      <td>
+        <input type="time" name="finish_{{ day }}" value="{{ log.finish_time if log else '' }}" {% if not is_editable %}readonly{% endif %}>
+      </td>
+      <td>
+        {{ log.total_time if log and log.total_time else '' }}
+      </td>
+      <td>
+        <select name="type_{{ day }}" {% if not is_editable %}disabled{% endif %}>
+          {% for option in ['Work', 'Holiday', 'Sick leave'] %}
+          <option value="{{ option }}" {% if log and log.log_type == option %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <br>
+  <button type="submit">Save Timesheet</button>
+</form>
+{% endblock %}

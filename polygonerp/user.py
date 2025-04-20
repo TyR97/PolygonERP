@@ -17,7 +17,7 @@ class User(db.Model):
     taj_number = db.Column(db.String(10), unique=True, nullable=False)
     job_title = db.Column(db.String(200), nullable=False)
     base_pay = db.Column(db.Integer, nullable=False)
-    D = db.Column(db.String(200), nullable=False)
+    email_address = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):

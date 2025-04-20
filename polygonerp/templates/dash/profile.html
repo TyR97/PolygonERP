@@ -5,15 +5,31 @@
         <div class="profile-card">
         <img src="{{ url_for('static', filename='french_rat.png') }}" class="profile-picture">
         <h2>{{user.name}}</h2>
-        <h3>{{user.username}}</h3>
+        <h3>{{user.job_title}}</h3>
         <h3>{{user.email_address}}</h3>
         </div>
-        <div class="profile-proj">
-            <h2>Project1</h2>
-            <h2>Project2</h2>
-        </div>
+  <div class="profile-proj">
+        <h2>Assigned Projects</h2>
+        {% if user.projects %}
+            <ul>
+                {% for project in user.projects %}
+                    <li>{{ project.name }} ({{ project.start_date }} - {{ project.finish_date }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No assigned projects</p>
+        {% endif %}
+
+        <h2>Supervised Projects</h2>
+        {% if supervised_projects %}
+            <ul>
+                {% for proj in supervised_projects %}
+                    <li>{{ proj.name }} ({{ proj.start_date }} → {{ proj.finish_date }})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No supervised projects.</p>
+        {% endif %}
     </div>
-
-
-
+</div>
 {% endblock %}

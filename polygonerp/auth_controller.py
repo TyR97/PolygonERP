@@ -170,6 +170,7 @@ class AuthController:
                     error = "Incorrect username."
                 elif not check_password_hash(user.password_hash, password):
                     error = "Incorrect password."
+                    print(error)
 
                 if error is None:
                     session['id'] = user.id
