@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, url_for, Blueprint
 from flask_mail import Mail
 from polygonerp.auth_controller import bp as auth_bp, init_auth_controller
+from polygonerp.dashboard import DashboardController
 from polygonerp.db import db, init_app
 
 mail = Mail()
@@ -25,9 +26,9 @@ def create_app(test_config=None):
     )
 
     #Init db and mail
-    from polygonerp.user import User
-    from polygonerp.TimeLog import TimeLog
-    from polygonerp.project import Project
+    from polygonerp.models.user import User
+    from polygonerp.models.time_log import TimeLog
+    from polygonerp.models.project import Project
 
     mail.init_app(app)
     init_app(app)
@@ -35,8 +36,9 @@ def create_app(test_config=None):
     init_auth_controller(app)
     app.register_blueprint(auth_bp)
 
-    from polygonerp import dash
-    app.register_blueprint(dash.bp)
+    dash_bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
+    DashboardController(dash_bp, app)
+    app.register_blueprint(dash_bp)
 
     with app.app_context():
         from datetime import date
@@ -64,6 +66,6 @@ def create_app(test_config=None):
 
     @app.route("/")
     def index():
-        return render_template('auth/login.html')
+        return redirect(url_for('auth.login'))
 
     return app

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+{% if succes %}
+    <script>
+        alert("Project created successfully!");
+        window.location.href = "{{ url_for('dashboard.dashboard', user_id=session['id']) }}";
+    </script>
+{% endif %}
+<h2>Create New Project</h2>
+
+<form method="post">
+  <label for="name">Project Name:</label>
+  <input type="text" name="name" required class="form_inp">
+
+  <label for="start_date">Start Date:</label>
+  <input type="date" name="start_date" required class="form_inp">
+
+  <label for="finish_date">Finish Date:</label>
+  <input type="date" name="finish_date" required class="form_inp">
+
+  <label for="supervisor_id">Supervisor:</label>
+  <select name="supervisor_id" required class="form_inp">
+    {% for user in supervisors %}
+      <option value="{{ user.id }}">{{ user.name }}</option>
+    {% endfor %}
+  </select>
+
+  <h3>Assign Workers:</h3>
+<div class="profile-card">
+  {% for user in workers %}
+
+    <div >
+      <input type="checkbox" id="worker_{{ user.id }}" name="workers" value="{{ user.id }}">
+      <label for="worker_{{ user.id }}">{{ user.name }}</label>
+    </div>
+
+  {% endfor %}
+      </div>
+  <input type="submit" value="Create Project" class="sign_in_button">
+</form>
+
+{% endblock %}

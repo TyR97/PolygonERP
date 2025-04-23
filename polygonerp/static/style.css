@@ -1,3 +1,6 @@
+/* Create a custom checkbox */
+
+
 @font-face {
     font-family: "JetBrains Sans";
     src: url("fonts/JetBrainsSans-Regular.woff2");
@@ -81,7 +84,8 @@ blockquote{
   align-items: center;
     color: rgba(243, 244, 246, 1);
 }
-/* From Uiverse.io by Yaya12085 */
+
+
 .form-container {
   width: 320px;
   border-radius: 0.75rem;
@@ -193,8 +197,7 @@ img {
     background-color: rgba(25, 25, 28, 0.5);
     cursor: pointer;
     color: rgba(255, 255, 255, 1);
-    height: 50px;
-    width: 100px;
+    padding:10px 20px ;
 }
 
 .sign_in_button:hover {

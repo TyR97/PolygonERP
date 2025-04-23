@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <body>
+     <div class="welcome_message" id="welcome_message">
+         <h1>Welcome, {{ user.name }}</h1>
+     </div>
+
+     <div class="middle_row" id="middle_row">
+            <div>
+                <button class="tile" onclick="location.href='{{ url_for('dashboard.profile_view', user_id=g.user.id)}}'" >Profil</button>
+            </div>
+            {% if g.user.is_admin %}
+            <div>
+                <button class="tile", onclick="location.href='{{ url_for('auth.register') }}'">Add New Employee</button>
+            </div>
+            {% endif %}
+            <div>
+                <button class="tile" onclick="location.href='{{ url_for('dashboard.search_users') }}'">Search Employees</button>
+            </div>
+            <div >
+                <button class="tile" onclick="location.href='{{ url_for('dashboard.time_log')}}'">Time Sheet</button>
+            </div>
+            {% if g.user.is_admin %}
+            <div>
+                <button class="tile" onclick="location.href='{{ url_for('dashboard.create_project')}}'">Create Project</button>
+            </div>
+        {% endif %}
+        </div>
+        <div class="bottom_row" id="bottom_row"></div>
+    </body>
+{% endblock %}

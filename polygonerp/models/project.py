@@ -1,5 +1,5 @@
 from polygonerp.db import db
-from polygonerp.project_assignments import project_assignments
+from polygonerp.models.project_assignments import project_assignments
 
 
 class Project(db.Model):

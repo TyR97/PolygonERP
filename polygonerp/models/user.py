@@ -19,6 +19,7 @@ class User(db.Model):
     base_pay = db.Column(db.Integer, nullable=False)
     email_address = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False)
+    first_login = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return '<User %r>' % self.username
