@@ -55,6 +55,7 @@ class DashboardController:
         users = User.query.filter(*filters).order_by(User.name.asc()).all()  if filters else User.query.order_by(User.name.asc()).all()
         return render_template("dashboard/search_users.html", users=users)
 
+    # TODO refactor using Flask-WTF
     def delete_user(self, user_id):
         user = User.query.filter_by(id=user_id).first()
 
@@ -81,13 +82,14 @@ class DashboardController:
 
         return render_template('dashboard/update_user.html', user=user, form=form)
 
+    # TODO refactor using Flask-WTF
     def create_project(self):
         if request.method == 'POST':
             try:
                 name = request.form['name']
                 start_date = datetime.strptime(request.form['start_date'], "%Y-%m-%d").date()
                 finish_date = datetime.strptime(request.form['finish_date'], "%Y-%m-%d").date()
-                supervisor_id = int(request.form['supervisor_id'])
+                supervisor_id = request.form['supervisor_id']
                 worker_ids = request.form.getlist('workers')
 
                 supervisor = db.session.get(User, supervisor_id)
@@ -116,6 +118,7 @@ class DashboardController:
             workers=all_users
         )
 
+    # TODO refactor using Flask-WTF
     def time_log(self):
         user_id = g.user.id if g.user else None
         if not user_id:

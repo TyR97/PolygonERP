@@ -1,13 +1,14 @@
 from polygonerp.db import db
 from polygonerp.models.project_assignments import project_assignments
 
-
+"""
+Represents a project entity within the system.
+"""
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     finish_date = db.Column(db.Date, nullable=False)
-
     supervisor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     supervisor = db.relationship('User', foreign_keys=[supervisor_id])
 

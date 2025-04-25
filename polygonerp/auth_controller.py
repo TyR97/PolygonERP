@@ -1,12 +1,12 @@
 from flask import (
-    Blueprint, g, redirect, render_template, request, session, url_for, flash
+    Blueprint, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from polygonerp.forms.login_form import LoginForm
 from polygonerp.models.user import User
 from polygonerp.db import db
-from polygonerp.forms.PasswordChange import ChangePasswordForm, ChangePasswordWithUsernameForm
+from polygonerp.forms.password_change_form import ChangePasswordForm, ChangePasswordWithUsernameForm
 from polygonerp.forms.user_form import UserForm
 
 from polygonerp.utils.auth_utils import generate_username, generate_password
@@ -25,15 +25,23 @@ class AuthController:
             self.bp.add_url_rule('/logout', view_func=self.logout)
             self.existing_usernames = []
 
+        """
+        Load the currently logged-in user from the session.
 
-
+        Retrieves the user ID from the session data. If a user ID exists assigns it 
+        to `g.user`.
+        
+        Returns:
+            None
+        """
         def load_logged_in_user(self):
             user_id = session.get('user_id')
             g.user = User.query.filter_by(id=user_id).first() if user_id else None
 
         def register(self):
-            admin_titles = ['senior developer', 'hr', 'accountant', 'sysadmin', 'dev']
+            admin_titles = ['hr', 'accountant', 'sysadmin']
             form = UserForm()
+
 
             if request.method == 'POST' and form.validate_on_submit():
                 username = generate_username(self.existing_usernames, form.name.data)

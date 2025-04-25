@@ -1,10 +1,14 @@
 import random
 import string
 
+from flask import flash
+
+#TODO refactor
 def generate_username(existing_usernames, full_name):
     parts = full_name.split(' ')
     if len(parts) < 2:
-        raise ValueError("Full name must have at least two words")
+        print("Full name must have at least two words")
+
 
     last_name = parts[0].capitalize()
     first_name = parts[1].capitalize()

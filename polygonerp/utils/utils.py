@@ -1,6 +1,9 @@
 import functools
 from flask import g, redirect, url_for
 
+"""
+Authentication decorators for access control.
+"""
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):

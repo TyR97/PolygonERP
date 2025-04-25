@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<form class="reg_form" method="post" onsubmit="return confirmUpdate()">
-{{ form.hidden_tag() }}  {# Includes CSRF token #}
+<form class="reg_form" method="post" >
+{{ form.hidden_tag() }}  {# CSRF token #}
   <div class="form-columns">
 
-    <!-- Left Column -->
+
     <div class="form-column">
       <div class="form-group">
         {{ form.name.label }} {{ form.name(class="form_inp") }}
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <!-- Right Column -->
+
     <div class="form-column">
       <div class="form-group">
         {{ form.address.label }} {{ form.address(class="form_inp") }}
@@ -49,7 +49,7 @@
   </div>
 
   <div class="form-submit">
-    <input type="submit" value="Update" class="sign_in_button">
+    <input type="submit" value="Save" class="sign_in_button">
   </div>
 </form>
 {% endblock %}

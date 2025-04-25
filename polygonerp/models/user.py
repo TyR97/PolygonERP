@@ -1,7 +1,7 @@
 from polygonerp.db import db
 
 """
-employee user in the PolygonERP system
+Represents user in the PolygonERP system
 """
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, Blueprint
 from flask_mail import Mail
 from polygonerp.auth_controller import bp as auth_bp, init_auth_controller
-from polygonerp.dashboard import DashboardController
+from polygonerp.dashboard_controller import DashboardController
 from polygonerp.db import db, init_app
 
 mail = Mail()

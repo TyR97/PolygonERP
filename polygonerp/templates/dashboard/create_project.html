@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if succes %}
-    <script>
-        alert("Project created successfully!");
-        window.location.href = "{{ url_for('dashboard.dashboard', user_id=session['id']) }}";
-    </script>
+    <script>projectCreated()</script>
 {% endif %}
 <h2>Create New Project</h2>
 
