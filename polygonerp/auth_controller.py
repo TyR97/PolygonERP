@@ -1,15 +1,13 @@
 from flask import (
     Blueprint, g, redirect, render_template, request, session, url_for, flash
 )
-from flask_wtf import form
-from sqlalchemy.sql.functions import current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from polygonerp.models import user
+from polygonerp.forms.login_form import LoginForm
 from polygonerp.models.user import User
 from polygonerp.db import db
-from polygonerp.templates.forms.PasswordChange import ChangePasswordForm
-from polygonerp.templates.forms.user_form import UserForm
+from polygonerp.forms.PasswordChange import ChangePasswordForm, ChangePasswordWithUsernameForm
+from polygonerp.forms.user_form import UserForm
 
 from polygonerp.utils.auth_utils import generate_username, generate_password
 from polygonerp.utils.email_utils import send_new_employee_notification, send_firs_login_notification
@@ -23,8 +21,8 @@ class AuthController:
             self.bp.add_url_rule('/register', view_func=self.register, methods=['GET', 'POST'])
             self.bp.add_url_rule('/login', view_func=self.login, methods=['GET', 'POST'])
             self.bp.add_url_rule('/change_password', view_func=self.change_password, methods=['GET', 'POST'])
+            self.bp.add_url_rule('/forgot_password', view_func=self.forgot_password, methods=['GET', 'POST'])
             self.bp.add_url_rule('/logout', view_func=self.logout)
-
             self.existing_usernames = []
 
 
@@ -74,31 +72,20 @@ class AuthController:
 
             return render_template('auth/register.html', form=form)
 
-
         def login(self):
-            if request.method == 'POST':
-                username = request.form['username']
-                password = request.form['password']
-                user = User.query.filter_by(username=username).first()
-                session['user_id'] = user.id
-                if user.first_login:
-                    print("first login")
-                    return redirect(url_for('auth.change_password'))
-                print(user)
+            form = LoginForm()
 
-                error = None
+            if form.validate_on_submit():
+                username = form.username.data
+                password = form.password.data
+                user = User.query.filter_by(username=username).first() if username else None
 
-                if user is None:
-                    error = "Incorrect username."
-                elif not check_password_hash(user.password_hash, password):
-                    error = "Incorrect password."
-                    print(error)
+                if check_password_hash(user.password_hash, password):
+                   session['user_id'] = user.id
+                   print("'siker'")
+                   return redirect(url_for('dashboard.dashboard'))
 
-                if error is None:
-                    session['user_id'] = user.id
-                    return redirect(url_for('dashboard.dashboard'))
-                print(error)
-            return render_template('auth/login.html')
+            return render_template('auth/login.html', form=form)
 
         def logout(self):
             session.clear()
@@ -106,18 +93,26 @@ class AuthController:
 
 
         def change_password(self):
-            print("beléptünk a fv.be")
             form = ChangePasswordForm()
             user = User.query.filter_by(id=session['user_id']).first()
-            print(user)
 
             if form.validate_on_submit():
-                user.password_has = generate_password_hash(form.password.data)
+                user.password_hash = generate_password_hash(form.password.data)
                 user.first_login = False
                 db.session.commit()
                 return redirect(url_for('dashboard.dashboard'))
 
-            return render_template('auth/new_password.html', form=form)  # <-- this line fixes the error
+            return render_template('auth/new_password.html', form=form)
+
+        def forgot_password(self):
+            form = ChangePasswordWithUsernameForm()
+            if form.validate_on_submit():
+                user = User.query.filter_by(username=form.username.data).first()
+                user.password_hash = generate_password_hash(form.password.data)
+                db.session.commit()
+                return redirect(url_for('auth.login'))
+
+            return render_template('auth/forgot_password.html', form=form)
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')

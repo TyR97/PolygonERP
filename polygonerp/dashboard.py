@@ -5,7 +5,7 @@ from polygonerp.models.time_log import TimeLog
 from polygonerp.models.user import User
 from polygonerp.db import db
 from polygonerp.models.project import Project
-from polygonerp.templates.forms.user_form import UserForm
+from polygonerp.forms.user_form import UserForm
 from polygonerp.utils.email_utils import send_employee_termination_notification
 from polygonerp.utils.utils import login_required, admin_required
 from polygonerp.utils.date_utils import  get_dates_for_current_month
@@ -25,7 +25,7 @@ class DashboardController:
         blueprint.add_url_rule('/log', view_func=self.time_log, methods=['GET', 'POST'])
 
     def dashboard(self):
-        print("Dashboard route hit!")
+
         return render_template('dashboard/dashboard.html', user=g.user)
 
     def profile_view(self, user_id):
@@ -60,7 +60,6 @@ class DashboardController:
 
         if request.method == 'POST':
             if request.form.get('terminated') == 'yes':
-                print(f"Ez lehete volna egy e-mail is: {user.name} munkaviszonya megszünt.")
                 db.session.delete(user)
                 db.session.commit()
                 send_employee_termination_notification(user)

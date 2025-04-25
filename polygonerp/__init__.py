@@ -41,27 +41,7 @@ def create_app(test_config=None):
     app.register_blueprint(dash_bp)
 
     with app.app_context():
-        from datetime import date
-
-        # Get existing users
-        supervisor = User.query.get(3)  # assuming user with id=1 exists
-        worker1 = User.query.get(2)   # assuming user with id=2 exists   # assuming user with id=2 exists
-
-        if supervisor and worker1:
-            # Create new project
-            new_project = Project(
-                name="Dildo tester",
-                start_date=date.today(),
-                finish_date=date(2025, 8, 18),
-                supervisor_id=supervisor.id,
-                assigned_workers=[worker1]  # you can add more workers here
-            )
-
-            db.session.add(new_project)
-            db.session.commit()
-            print("✅ Project created and users assigned.")
-        else:
-            print("⚠️ Supervisor or worker user not found.")
+        pass
 
 
     @app.route("/")
