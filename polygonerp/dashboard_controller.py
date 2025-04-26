@@ -1,6 +1,3 @@
-from pickle import EMPTY_LIST
-
-import flask
 from flask import render_template, request, redirect, url_for, flash, g
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import date, datetime
@@ -15,7 +12,7 @@ from polygonerp.utils.email_utils import send_employee_termination_notification
 from polygonerp.utils.utils import login_required, admin_required
 from polygonerp.utils.date_utils import  get_dates_for_current_month
 
-
+#TODO separate projects to own controller
 class DashboardController:
     def __init__(self, blueprint, app):
         self.bp = blueprint
@@ -31,7 +28,7 @@ class DashboardController:
         blueprint.add_url_rule('/projects', view_func=self.list_projects, methods=['GET', 'POST'])
 
 
-#todo check if logged in user is same as the one who's is the dash
+#TODO check if logged in user is same as the owner of the dash
     def dashboard(self):
 
         return render_template('dashboard/dashboard.html', user=g.user)
@@ -106,7 +103,7 @@ class DashboardController:
 
         return render_template('dashboard/update_user.html', user=user, form=form)
 
-    # TODO refactor using Flask-WTF
+    # TODO refactor using Flask-WTF #TODO separate projects to own controller
     def create_project(self):
         if request.method == 'POST':
             try:
@@ -142,6 +139,7 @@ class DashboardController:
             workers=all_users
         )
 
+    # TODO separate projects to own controller
     def list_projects(self):
         projects = Project.query.all()
         if not projects:
