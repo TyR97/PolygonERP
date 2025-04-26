@@ -1,6 +1,11 @@
+from pickle import EMPTY_LIST
+
+import flask
 from flask import render_template, request, redirect, url_for, flash, g
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import date, datetime
+
+from polygonerp.forms.delete_user_form import DeleteUserForm
 from polygonerp.models.time_log import TimeLog
 from polygonerp.models.user import User
 from polygonerp.db import db
@@ -23,7 +28,10 @@ class DashboardController:
         blueprint.add_url_rule('/edit_worker/<user_id>', view_func= admin_required(self.update_user), methods=['GET', 'POST'])
         blueprint.add_url_rule('/projects/create', view_func=admin_required(self.create_project), methods=['GET', 'POST'])
         blueprint.add_url_rule('/log', view_func=self.time_log, methods=['GET', 'POST'])
+        blueprint.add_url_rule('/projects', view_func=self.list_projects, methods=['GET', 'POST'])
 
+
+#todo check if logged in user is same as the one who's is the dash
     def dashboard(self):
 
         return render_template('dashboard/dashboard.html', user=g.user)
@@ -55,18 +63,34 @@ class DashboardController:
         users = User.query.filter(*filters).order_by(User.name.asc()).all()  if filters else User.query.order_by(User.name.asc()).all()
         return render_template("dashboard/search_users.html", users=users)
 
-    # TODO refactor using Flask-WTF
     def delete_user(self, user_id):
         user = User.query.filter_by(id=user_id).first()
+        project = Project.query.filter_by(supervisor_id=user.id).first()
+        form = DeleteUserForm()
 
-        if request.method == 'POST':
-            if request.form.get('terminated') == 'yes':
+
+
+        if user == g.user:
+            flash("You can't delete your own account!", "danger")
+            return redirect(url_for('dashboard.search_users'))
+
+        if form.validate_on_submit():
+            if form.terminated.data == 'yes':
                 db.session.delete(user)
+                db.session.delete(project)
                 db.session.commit()
                 send_employee_termination_notification(user)
+                flash("User has been deleted!", "success")
+                return redirect(url_for('dashboard.search_users'))
+            else:
+                db.session.delete(user)
+                db.session.delete(project)
+                db.session.commit()
+                flash("User has been deleted!", "success")
                 return redirect(url_for('dashboard.search_users'))
 
-        return render_template("dashboard/delete_user.html", user=user)
+
+        return render_template("dashboard/delete_user.html", user=user, form=form)
 
 
     def update_user(self, user_id):
@@ -117,6 +141,12 @@ class DashboardController:
             supervisors=all_users,
             workers=all_users
         )
+
+    def list_projects(self):
+        projects = Project.query.all()
+        if not projects:
+            flash("No projects found!", "danger")
+        return render_template('dashboard/list_projects.html', projects=projects)
 
     # TODO refactor using Flask-WTF
     def time_log(self):

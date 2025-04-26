@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+{% for project in projects %}
+<ul>
+    <li class="debug">
+        {{ project.name }}
+        <button class="sign_in_button">Delete</button>
+    </li>
+
+</ul>
+{% endfor %}
+{% endblock %}

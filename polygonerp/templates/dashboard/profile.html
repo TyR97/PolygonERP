@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="profile">
-    <div class="sidebar"></div>
-        <div class="profile-card">
+  <div class="profile">
+      <div class="profile-card">
         <img src="{{ url_for('static', filename='default_pic.png') }}" class="profile-picture">
         <h2>{{user.name}}</h2>
         <h3>{{user.job_title}}</h3>
         <h3>{{user.email_address}}</h3>
-        </div>
-  <div class="profile-proj">
+      </div>
+    <div class="profile-proj">
         <h2>Assigned Projects</h2>
         {% if user.projects %}
             <ul>

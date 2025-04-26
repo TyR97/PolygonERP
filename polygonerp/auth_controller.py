@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, g, redirect, render_template, request, session, url_for
+    Blueprint, g, redirect, render_template, request, session, url_for, flash
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -43,7 +43,7 @@ class AuthController:
             form = UserForm()
 
 
-            if request.method == 'POST' and form.validate_on_submit():
+            if form.validate_on_submit():
                 username = generate_username(self.existing_usernames, form.name.data)
                 password = generate_password()
                 user_mail = username + "@polygon_erp.com"
@@ -72,11 +72,12 @@ class AuthController:
                         create_contract(new_user)
                         send_new_employee_notification(new_user)
                         send_firs_login_notification(new_user, password)
+                        flash("User added successfully!", "success")
                 except Exception as e:
                     db.session.rollback()
                     print(f"Error adding user: {e}")
                 else:
-                    return redirect(url_for('auth.login'))
+                    return redirect(url_for('dashboard.dashboard'))
 
             return render_template('auth/register.html', form=form)
 
@@ -90,7 +91,6 @@ class AuthController:
 
                 if check_password_hash(user.password_hash, password):
                    session['user_id'] = user.id
-                   print("'siker'")
                    return redirect(url_for('dashboard.dashboard'))
 
             return render_template('auth/login.html', form=form)
