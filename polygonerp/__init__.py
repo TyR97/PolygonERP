@@ -21,8 +21,8 @@ def create_app(test_config=None):
         MAIL_SERVER="smtp.mailgun.org",
         MAIL_PORT=587,
         MAIL_USE_TLS=True,
-        MAIL_USERNAME="postmaster@sandbox0ce297070b444e6ea390aba06950b419.mailgun.org",
-        MAIL_PASSWORD="825f1c7c1c17ffb135649d15f4562a16-f6202374-9458f4bc",
+        MAIL_USERNAME="",
+        MAIL_PASSWORD="",
     )
 
     #Init db and mail

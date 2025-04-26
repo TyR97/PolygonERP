@@ -126,7 +126,7 @@ class DashboardController:
 
                 db.session.add(new_project)
                 db.session.commit()
-                return render_template('dashboard/create_project.html', succes=True)
+                return render_template('dashboard/dashboard.html', succes=True)
 
             except SQLAlchemyError as e:
                 db.session.rollback()
