@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for project in projects %}
+<div>
+    <ul>
+        <li class="debug">
+            {{ project.name }}
+            <button class="sign_in_button" onclick="location.href='{{ url_for('project.edit_project', project_id=project.id)}}'">Edit</button>
+            <button class="sign_in_button" onclick="location.href='{{ url_for('project.delete_project', project_id=project.id)}}'">Delete</button>
+        </li>
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}

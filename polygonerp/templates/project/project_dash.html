@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="middle_row">
+    <button class="tile" onclick="location.href='{{ url_for('project.create_project')}}'">Create Project</button>
+    <button class="tile" onclick="location.href='{{ url_for('project.list_projects')}}'">Search Project</button>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Search Users</h2>
+<h2>Employee List</h2>
 
 <form method="get">
   <label for="name">Name:</label>
@@ -13,7 +13,7 @@
   <label for="email">Email:</label>
   <input type="text" name="email" id="email" placeholder="Enter email" class="form_inp">
 
-  <input type="submit" value="Search" class="sign_in_button">
+  <input type="submit" value="Filter" class="sign_in_button">
 </form>
 
 {% if users %}

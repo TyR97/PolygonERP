@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="static/js/script.js"></script>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
   <body>
     <div class="title_row">
@@ -25,8 +26,9 @@
         {{ form.password(class="form_inp", placeholder="Enter new password") }}
         </div>
           {{ form.submit(class="sign_in_button") }}
+          <button class="sign_in_button"  onclick="location.href='{{ url_for('auth.forgot_password') }}'">Forgot Password</button>
       </form>
-         <button class="sign_in_button"  onclick="location.href='{{ url_for('auth.forgot_password') }}'">Forgot Password</button>
+
     </div>
     {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}

@@ -161,6 +161,7 @@ img {
     cursor: pointer;
     color: rgba(255, 255, 255, 1);
     padding: 1rem 2rem ;
+    margin-top: 1rem;
 }
 
 .sign_in_button:hover {
@@ -175,7 +176,6 @@ img {
 .dashboard_container{
     /*border: 5px ridge;*/
     display: flex;
-
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -334,6 +334,15 @@ img {
     color: rgba(255, 255, 255, 1);
     height: 12.5rem;
     width: 15.625rem;
+}
+
+.tile_small{
+    font-family: "JetBrains Mono", Inter, system-ui, sans-serif;
+    background-color: rgba(25, 25, 28, 0.5);
+    cursor: pointer;
+    color: rgba(255, 255, 255, 1);
+    height: 2.5rem;
+    width: 5.625rem;
 }
 
 .tile:hover {

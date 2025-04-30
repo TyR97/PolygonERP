@@ -1,5 +1,4 @@
 from flask import render_template, request, redirect, url_for, flash, g
-from sqlalchemy.exc import SQLAlchemyError
 from datetime import date, datetime
 
 from polygonerp.forms.delete_user_form import DeleteUserForm
@@ -9,7 +8,7 @@ from polygonerp.db import db
 from polygonerp.models.project import Project
 from polygonerp.forms.user_form import UserForm
 from polygonerp.utils.email_utils import send_employee_termination_notification
-from polygonerp.utils.utils import login_required, admin_required
+from polygonerp.utils.decorators_util import login_required, admin_required
 from polygonerp.utils.date_utils import  get_dates_for_current_month
 
 #TODO separate projects to own controller
@@ -18,20 +17,22 @@ class DashboardController:
         self.bp = blueprint
 
         # Registering routes for Blueprint
-        blueprint.add_url_rule('/', view_func=login_required(self.dashboard), methods=['GET', 'POST'])
-        blueprint.add_url_rule('/profile/<user_id>', view_func=self.profile_view, methods=['GET', 'POST'])
-        blueprint.add_url_rule('/search', view_func=self.search_users, methods=['GET', 'POST'])
-        blueprint.add_url_rule('/delete/<user_id>', view_func=admin_required(self.delete_user), methods=['GET', 'POST'])
-        blueprint.add_url_rule('/edit_worker/<user_id>', view_func= admin_required(self.update_user), methods=['GET', 'POST'])
-        blueprint.add_url_rule('/projects/create', view_func=admin_required(self.create_project), methods=['GET', 'POST'])
-        blueprint.add_url_rule('/log', view_func=self.time_log, methods=['GET', 'POST'])
-        blueprint.add_url_rule('/projects', view_func=self.list_projects, methods=['GET', 'POST'])
+        self.bp.add_url_rule('/', view_func=login_required(self.dashboard), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/profile/<user_id>', view_func=self.profile_view, methods=['GET', 'POST'])
+        self.bp.add_url_rule('/search', view_func=self.search_users, methods=['GET', 'POST'])
+        self.bp.add_url_rule('/employee_dash', view_func=self.employee_dash, methods=['GET', 'POST'])
+        self.bp.add_url_rule('/delete/<user_id>', view_func=admin_required(self.delete_user), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/edit_worker/<user_id>', view_func= admin_required(self.update_user), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/log', view_func=self.time_log, methods=['GET', 'POST'])
 
 
 #TODO check if logged in user is same as the owner of the dash
     def dashboard(self):
 
         return render_template('dashboard/dashboard.html', user=g.user)
+    def employee_dash(self):
+
+        return render_template('dashboard/employee_dash.html')
 
     def profile_view(self, user_id):
         user = User.query.filter_by(id=user_id).first()
@@ -103,48 +104,9 @@ class DashboardController:
 
         return render_template('dashboard/update_user.html', user=user, form=form)
 
-    # TODO refactor using Flask-WTF #TODO separate projects to own controller
-    def create_project(self):
-        if request.method == 'POST':
-            try:
-                name = request.form['name']
-                start_date = datetime.strptime(request.form['start_date'], "%Y-%m-%d").date()
-                finish_date = datetime.strptime(request.form['finish_date'], "%Y-%m-%d").date()
-                supervisor_id = request.form['supervisor_id']
-                worker_ids = request.form.getlist('workers')
 
-                supervisor = db.session.get(User, supervisor_id)
-                workers = [db.session.get(User, int(uid)) for uid in worker_ids]
 
-                new_project = Project(
-                    name=name,
-                    start_date=start_date,
-                    finish_date=finish_date,
-                    supervisor=supervisor,
-                    assigned_workers=workers
-                )
 
-                db.session.add(new_project)
-                db.session.commit()
-                return render_template('dashboard/dashboard.html', succes=True)
-
-            except SQLAlchemyError as e:
-                db.session.rollback()
-                flash("Error creating project: " + str(e), "danger")
-
-        all_users = User.query.all()
-        return render_template(
-            'dashboard/create_project.html',
-            supervisors=all_users,
-            workers=all_users
-        )
-
-    # TODO separate projects to own controller
-    def list_projects(self):
-        projects = Project.query.all()
-        if not projects:
-            flash("No projects found!", "danger")
-        return render_template('dashboard/list_projects.html', projects=projects)
 
     # TODO refactor using Flask-WTF
     def time_log(self):

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Are you sure you want to delete ?</h2>
+    <form method="post" onsubmit="return confirmDelete()">
+    {{ form.hidden_tag() }}
+        <div class="input_group">
+        </div>
+        <div>
+       <button type="submit" class="sign_in_button" id="submitBtn">Yes</button>
+       <button type="button" class="sign_in_button" onclick="location.href='{{ url_for('project.list_projects') }}'">No</button>
+        </div>
+    </form>
+{% endblock %}

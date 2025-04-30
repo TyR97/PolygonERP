@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="middle_row">
+    {% if g.user.is_admin %}
+            <button class="tile" onclick="location.href='{{ url_for('auth.register') }}'">Add New Employee</button>
+    {% endif %}
+
+    <button class="tile" onclick="location.href='{{ url_for('dashboard.search_users') }}'">Search Employee List</button>
+</div>
+
+{% endblock %}

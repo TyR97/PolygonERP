@@ -87,11 +87,15 @@ class AuthController:
             if form.validate_on_submit():
                 username = form.username.data
                 password = form.password.data
-                user = User.query.filter_by(username=username).first() if username else None
+                user = User.query.filter_by(username=username).first()
 
-                if check_password_hash(user.password_hash, password):
+                if user and check_password_hash(user.password_hash, password):
                    session['user_id'] = user.id
                    return redirect(url_for('dashboard.dashboard'))
+                else:
+                    flash("Invalid username or password.", "danger")
+
+
 
             return render_template('auth/login.html', form=form)
 

@@ -9,22 +9,21 @@
             <div>
                 <button class="tile" onclick="location.href='{{ url_for('dashboard.profile_view', user_id=g.user.id)}}'" >Profil</button>
             </div>
-            {% if g.user.is_admin %}
+
             <div>
-                <button class="tile" onclick="location.href='{{ url_for('auth.register') }}'">Add New Employee</button>
-            </div>
-            {% endif %}
-            <div>
-                <button class="tile" onclick="location.href='{{ url_for('dashboard.search_users') }}'">Search Employees</button>
+                <button class="tile" onclick="location.href='{{ url_for('dashboard.employee_dash') }}'">Employees</button>
             </div>
             <div >
                 <button class="tile" onclick="location.href='{{ url_for('dashboard.time_log')}}'">Time Sheet</button>
             </div>
             {% if g.user.is_admin %}
             <div>
-                <button class="tile" onclick="location.href='{{ url_for('dashboard.create_project')}}'">Create Project</button>
+                <button class="tile" onclick="location.href='{{ url_for('project.project_dash')}}'">Projects</button>
             </div>
         {% endif %}
+            <div>
+                <button class="tile" onclick="location.href='{{ url_for('auth.logout') }}'">Logout</button>
+            </div>
         </div>
         <div class="bottom_row" id="bottom_row"></div>
     </body>
