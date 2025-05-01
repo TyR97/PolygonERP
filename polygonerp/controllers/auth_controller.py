@@ -46,6 +46,7 @@ class AuthController:
             if form.validate_on_submit():
                 username = generate_username(self.existing_usernames, form.name.data)
                 password = generate_password()
+                print(password)
                 user_mail = username + "@polygon_erp.com"
                 is_admin = form.job_title.data.lower() in admin_titles
 
@@ -84,18 +85,19 @@ class AuthController:
         def login(self):
             form = LoginForm()
 
+
             if form.validate_on_submit():
                 username = form.username.data
                 password = form.password.data
                 user = User.query.filter_by(username=username).first()
 
                 if user and check_password_hash(user.password_hash, password):
-                   session['user_id'] = user.id
-                   return redirect(url_for('dashboard.dashboard'))
+                    session['user_id'] = user.id
+                    if user.first_login:
+                        return redirect(url_for('auth.change_password'))
+                    return redirect(url_for('dashboard.dashboard'))
                 else:
                     flash("Invalid username or password.", "danger")
-
-
 
             return render_template('auth/login.html', form=form)
 

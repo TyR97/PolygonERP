@@ -1,8 +1,11 @@
 from flask import Flask, redirect, url_for, Blueprint
 from flask_mail import Mail
+
+from polygonerp.controllers import dashboard_controller
 from polygonerp.controllers.auth_controller import bp as auth_bp, init_auth_controller
 from polygonerp.controllers.dashboard_controller import DashboardController
 from polygonerp.controllers.project_controller import bp as project_bp, init_project_controller
+from polygonerp.controllers.user_controller import bp as user_bp, init_user_controller
 from polygonerp.db import db, init_app
 
 mail = Mail()
@@ -36,8 +39,10 @@ def create_app(test_config=None):
 
     init_auth_controller(app)
     init_project_controller(app)
+    init_user_controller(app)
     app.register_blueprint(auth_bp)
     app.register_blueprint(project_bp)
+    app.register_blueprint(user_bp)
 
     dash_bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
     DashboardController(dash_bp, app)
