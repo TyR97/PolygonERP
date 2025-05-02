@@ -10,6 +10,7 @@ from polygonerp.forms.password_change_form import ChangePasswordForm, ChangePass
 from polygonerp.forms.user_form import UserForm
 
 from polygonerp.utils.auth_utils import generate_username, generate_password
+from polygonerp.utils.decorators_util import admin_required
 from polygonerp.utils.email_utils import send_new_employee_notification, send_firs_login_notification
 from polygonerp.utils.doc_utils import create_contract
 
@@ -117,7 +118,7 @@ class AuthController:
                 return redirect(url_for('dashboard.dashboard'))
 
             return render_template('auth/new_password.html', form=form)
-
+        #TODO CHANGE ASPA
         def forgot_password(self):
             form = ChangePasswordWithUsernameForm()
             if form.validate_on_submit():
@@ -129,6 +130,3 @@ class AuthController:
             return render_template('auth/forgot_password.html', form=form)
 
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
-def init_auth_controller(app):
-    AuthController(bp, app)

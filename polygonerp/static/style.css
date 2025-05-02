@@ -47,15 +47,17 @@ blockquote{
 }
 
 .debug{
-    border-style: solid;
-    border-color: mediumpurple;
-    list-style-type: none;
     display: flex;
     padding: 10px;
     gap:    10px;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
 }
 
+.button-group {
+    display: flex;
+    gap: 10px;
+}
 
 .sign_in_form{
   /*border: 5px ridge #f00;*/
@@ -118,6 +120,16 @@ h1 {
     font-size: 29px;
     line-height: 39px;
     font-weight: 300;
+}
+
+li{
+    list-style: none;
+}
+
+li:hover{
+    border: 1px solid rgb(153, 105, 199);
+    background-clip: padding-box;
+
 }
 
 .title {
@@ -362,3 +374,43 @@ img {
         margin-bottom: 30px;
     }
 }
+
+
+.user_list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    color: white;
+}
+
+.user_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: black;
+    padding: 10px;
+}
+
+.user_row > div {
+    flex: 1;
+}
+
+.user_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.timesheet_container {
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+.timesheet_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

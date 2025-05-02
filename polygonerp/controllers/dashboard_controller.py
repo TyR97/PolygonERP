@@ -1,5 +1,9 @@
+import os
+
 from flask import render_template, request, redirect, url_for, flash, g
 from datetime import date, datetime
+from flask import current_app
+from werkzeug.utils import send_from_directory
 
 from polygonerp.models.time_log import TimeLog
 from polygonerp.models.user import User
@@ -7,20 +11,19 @@ from polygonerp.db import db
 from polygonerp.models.project import Project
 from polygonerp.utils.decorators_util import login_required
 from polygonerp.utils.date_utils import  get_dates_for_current_month
+from polygonerp.utils.doc_utils import find_user_contract, time_log_to_doc
 
-#TODO separate projects to own controller
+
 class DashboardController:
     def __init__(self, blueprint, app):
         self.bp = blueprint
-
         # Registering routes for Blueprint
         self.bp.add_url_rule('/', view_func=login_required(self.dashboard), methods=['GET', 'POST'])
-        self.bp.add_url_rule('/profile/<user_id>', view_func=self.profile_view, methods=['GET', 'POST'])
-
+        self.bp.add_url_rule('/profile/<user_id>', view_func=login_required(self.profile_view), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/download_contract/<user_id>', view_func=login_required(self.download_contract), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/download_log/<user_id>', view_func=login_required(self.download_log), methods=['GET', 'POST'])
         self.bp.add_url_rule('/log', view_func=self.time_log, methods=['GET', 'POST'])
 
-
-#TODO check if logged in user is same as the owner of the dash
     def dashboard(self):
 
         return render_template('dashboard/dashboard.html', user=g.user)
@@ -38,8 +41,24 @@ class DashboardController:
             supervised_projects=supervised_projects
         )
 
+    def download_contract(self, user_id):
+        user = User.query.get_or_404(user_id)
+        if user == g.user or g.user.is_admin:
+            return find_user_contract(user)
+        else:
+            return redirect(url_for('dashboard.profile_view', user_id=user_id))
 
-    # TODO refactor using Flask-WTF
+    def download_log(self, user_id):
+        user = User.query.get_or_404(user_id)
+        logs = TimeLog.query.filter_by(user_id=user_id).all()
+        if user == g.user or g.user.is_admin:
+            if user and logs:
+                return time_log_to_doc(logs, user.name)
+            elif not logs:
+                flash("No time sheet found", "danger")
+                return redirect(url_for('dashboard.profile_view', user_id=user_id))
+
+
     def time_log(self):
         user_id = g.user.id if g.user else None
         if not user_id:

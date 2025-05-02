@@ -4,13 +4,13 @@
     <h2>Are you sure you want to delete {{ user.name }}?</h2>
     <form method="post" onsubmit="return confirmDelete()">
     {{ form.hidden_tag() }}
-        <div class="input_group">
+       <div class="input_group">
             {{ form.terminated.label}}
             {{ form.terminated(class="checkmark", id="terminatedCheckbox") }}
-        </div>
-        <div>
-       <button type="submit" class="sign_in_button" id="submitBtn">Yes</button>
-       <button type="button" class="sign_in_button" onclick="location.href='{{ url_for('dashboard.search_users') }}'">No</button>
-        </div>
+       </div>
+       <div>
+        <button type="submit" class="sign_in_button" id="submitBtn">Yes</button>
+        <button type="button" class="sign_in_button" onclick="location.href='{{ url_for('user.search_users') }}'">No</button>
+       </div>
     </form>
 {% endblock %}

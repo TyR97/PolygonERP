@@ -2,9 +2,8 @@
 
 {% block content %}
 <h2>My Timesheet - {{ dates[0].strftime('%B %Y') }}</h2>
-
-<form method="post">
-  <table border="1">
+<form method="post" class="timesheet_form">
+  <table>
     <tr>
       <th>Date</th>
       <th>Start</th>
@@ -17,7 +16,7 @@
     {% set log = logs.get(day) %}
     <tr>
       <td>{{ day.strftime('%Y-%m-%d') }}</td>
-      {% set is_editable = day >= current_date %}
+      {% set is_editable = day == current_date %}
       <td>
         <input type="time" name="start_{{ day }}" value="{{ log.start_time if log else '' }}" {% if not is_editable %}readonly{% endif %}>
       </td>
@@ -37,7 +36,6 @@
     </tr>
     {% endfor %}
   </table>
-
   <br>
   <button type="submit">Save Timesheet</button>
 </form>

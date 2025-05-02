@@ -6,7 +6,7 @@ from polygonerp.db import db
 from polygonerp.forms.edit_project_form import UpdateProjectForm
 from polygonerp.models.project import Project
 from polygonerp.models.user import User
-from polygonerp.utils.decorators_util import admin_required
+from polygonerp.utils.decorators_util import admin_required, login_required
 from polygonerp.forms.delete_project_form import DeleteProjectForm
 
 
@@ -14,7 +14,8 @@ class ProjectController:
 
     def __init__(self, blueprint, app):
         self.bp = blueprint
-        self.bp.add_url_rule('/', view_func=self.project_dash, methods=['GET', 'POST'])
+        self.bp.add_url_rule('/', view_func=login_required(self.project_dash), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/project/<project_id>', view_func=login_required(self.project_detail), methods=['GET', 'POST'])
         self.bp.add_url_rule('/create', view_func=admin_required(self.create_project), methods=['GET', 'POST'])
         self.bp.add_url_rule('/list_projects', view_func=self.list_projects, methods=['GET', 'POST'])
         self.bp.add_url_rule('/delete/<project_id>', view_func=admin_required(self.delete_project), methods=['GET', 'POST'])
@@ -23,6 +24,13 @@ class ProjectController:
 
     def project_dash(self):
         return render_template('project/project_dash.html')
+
+    def project_detail(self, project_id):
+        project = Project.query.get(project_id)
+
+        return render_template('project/project_detail.html', project=project)
+
+
 
         # TODO refactor using Flask-WTF
     def create_project(self):
@@ -97,7 +105,3 @@ class ProjectController:
 
         return render_template('project/delete_project.html', project_id=project_id, form=form)
 
-
-bp = Blueprint('project', __name__, url_prefix='/project')
-def init_project_controller(app):
-    ProjectController(bp, app)

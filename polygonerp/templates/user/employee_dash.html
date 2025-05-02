@@ -4,8 +4,8 @@
 <div class="middle_row">
     {% if g.user.is_admin %}
             <button class="tile" onclick="location.href='{{ url_for('auth.register') }}'">Add New Employee</button>
+            <button class="tile" onclick="location.href='{{ url_for('user.download_user_list') }}'">Download Employee List</button>
     {% endif %}
-
     <button class="tile" onclick="location.href='{{ url_for('user.search_users') }}'">Search Employee List</button>
 </div>
 

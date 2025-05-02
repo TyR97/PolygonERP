@@ -7,6 +7,7 @@ from polygonerp.models.user import User
 from polygonerp.db import db
 from polygonerp.models.project import Project
 from polygonerp.forms.user_form import UserForm
+from polygonerp.utils.doc_utils import user_list_to_doc
 from polygonerp.utils.email_utils import send_employee_termination_notification
 from polygonerp.utils.decorators_util import login_required, admin_required
 from polygonerp.utils.date_utils import  get_dates_for_current_month
@@ -19,10 +20,18 @@ class UserController():
         self.bp.add_url_rule('/employee_dash', view_func=self.employee_dash, methods=['GET', 'POST'])
         self.bp.add_url_rule('/delete/<user_id>', view_func=admin_required(self.delete_user), methods=['GET', 'POST'])
         self.bp.add_url_rule('/edit_worker/<user_id>', view_func= admin_required(self.update_user), methods=['GET', 'POST'])
+        self.bp.add_url_rule('/download_user_list', view_func= admin_required(self.download_user_list), methods=['GET', 'POST'])
 
     def employee_dash(self):
 
         return render_template('user/employee_dash.html')
+
+    def download_user_list(self):
+        users = User.query.all()
+        if users:
+            return user_list_to_doc(users)
+        else:
+            return redirect(url_for('user.employee_dash'))
 
     def search_users(self):
         name_query = request.args.get('name', '').strip()
@@ -42,7 +51,6 @@ class UserController():
 
     def delete_user(self, user_id):
         user = User.query.filter_by(id=user_id).first()
-        project = Project.query.filter_by(supervisor_id=user.id).first()
         form = DeleteUserForm()
 
         if user == g.user:
@@ -52,14 +60,12 @@ class UserController():
         if form.validate_on_submit():
             if form.terminated.data == 'yes':
                 db.session.delete(user)
-                db.session.delete(project)
                 db.session.commit()
                 send_employee_termination_notification(user)
                 flash("User has been deleted!", "success")
                 return redirect(url_for('user.search_users'))
             else:
                 db.session.delete(user)
-                db.session.delete(project)
                 db.session.commit()
                 flash("User has been deleted!", "success")
                 return redirect(url_for('user.search_users'))
@@ -80,8 +86,3 @@ class UserController():
 
 
         return render_template('user/update_user.html', user=user, form=form)
-
-bp = Blueprint('user', __name__, url_prefix='/employee')
-
-def init_user_controller(app):
-    UserController(bp, app)

@@ -1,43 +1,42 @@
 {% block content %}
-<html lang="HU">
-  <head>
-    <title>Polygon_ERP</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="static/js/script.js"></script>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  </head>
-  <body>
-    <div class="title_row">
-      <h1>Polygon_ERP</h1>
-    </div>
-<div class="container">
-    <div class="sign_in_row">
-        <h2>Login</h2>
-      <form class="sign_in_form" method="POST">
-          {{ form.hidden_tag() }}
-        <div class="input_group">
-          {{ form.username.label }}
-          {{ form.username(class="form_inp", placeholder="Enter your username" )}}
-        </div>
-        <div class="input_group">
-        {{ form.password.label()}}
-        {{ form.password(class="form_inp", placeholder="Enter new password") }}
-        </div>
-          {{ form.submit(class="sign_in_button") }}
-          <button class="sign_in_button"  onclick="location.href='{{ url_for('auth.forgot_password') }}'">Forgot Password</button>
-      </form>
+    <html lang="HU">
+      <head>
+        <title>Polygon_ERP</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+      </head>
 
-    </div>
+    <body>
+        <div class="title_row">
+          <h1>Polygon_ERP</h1>
+        </div>
+        <div class="container">
+            <div class="sign_in_row">
+                <h2>Login</h2>
+                <form class="sign_in_form" method="POST">
+                        {{ form.hidden_tag() }}
+                    <div class="input_group">
+                        {{ form.username.label }}
+                        {{ form.username(class="form_inp", placeholder="Enter your username" )}}
+                    </div>
+                    <div class="input_group">
+                        {{ form.password.label()}}
+                        {{ form.password(class="form_inp", placeholder="Enter new password") }}
+                    </div>
+                        {{ form.submit(class="sign_in_button") }}
+                    <button class="sign_in_button"  onclick="location.href='{{ url_for('auth.forgot_password') }}'">Forgot Password</button>
+                </form>
+            </div>
     {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-    </div>
-  </body>
-</html>
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+        </div>
+      </body>
+    </html>
 {% endblock %}

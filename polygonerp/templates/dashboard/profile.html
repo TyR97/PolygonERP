@@ -30,5 +30,12 @@
             <p>No supervised projects.</p>
         {% endif %}
     </div>
+
+        {% if g.user.id == user.id or g.user.is_admin %}
+        <div>
+            <button class="tile" onclick="location.href='{{ url_for('dashboard.download_contract', user_id=user.id)}}'">Download Contract</button>
+            <button class="tile" onclick="location.href='{{ url_for('dashboard.download_log', user_id=user.id)}}'">Download Time Sheet</button>
+        </div>
+        {% endif %}
 </div>
 {% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="profile">
+      <div class="profile-card">
+        <h2>{{project.name}}</h2>
+        <h3>{{project.start_date}}</h3>
+        <h3>{{project.finish_date}}</h3>
+      </div>
+    <div class="profile-proj">
+        <h2>Assigned Employees</h2>
+        {% if project.assigned_workers %}
+            <ul>
+                {% for worker in project.assigned_workers %}
+                    <li onclick="location.href='{{ url_for('dashboard.profile_view', user_id=worker.id)}}'">{{ worker.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No assigned employees</p>
+        {% endif %}
+
+        <h2>Supervisor</h2>
+        {% if project.supervisor %}
+            <ul>
+                <li onclick="location.href='{{ url_for('dashboard.profile_view', user_id=project.supervisor.id)}}'">{{ project.supervisor.name }} </li>
+            </ul>
+        {% else %}
+            <p>No assigned supervisor.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

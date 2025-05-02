@@ -14,7 +14,7 @@ class User(db.Model):
     dob = db.Column(db.String(200), nullable=False)
     address = db.Column(db.String(200), nullable=False)
     tax_num = db.Column(db.String(10), unique=True ,nullable=False)
-    taj_number = db.Column(db.String(10), unique=True, nullable=False)
+    taj_number = db.Column(db.String(9), unique=True, nullable=False)
     job_title = db.Column(db.String(200), nullable=False)
     base_pay = db.Column(db.Integer, nullable=False)
     email_address = db.Column(db.String(200), nullable=False)
