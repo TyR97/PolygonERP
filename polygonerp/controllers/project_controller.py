@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask import flash, render_template, request, Blueprint, redirect, url_for
+from sqlalchemy.dialects.oracle.dictionary import all_users
 from sqlalchemy.exc import SQLAlchemyError
 from polygonerp.db import db
 from polygonerp.forms.edit_project_form import UpdateProjectForm
@@ -31,17 +32,17 @@ class ProjectController:
         return render_template('project/project_detail.html', project=project)
 
 
-
-        # TODO refactor using Flask-WTF
     def create_project(self):
+        all_users = User.query.all()
         if request.method == 'POST':
+
             try:
+
                 name = request.form['name']
                 start_date = datetime.strptime(request.form['start_date'], "%Y-%m-%d").date()
                 finish_date = datetime.strptime(request.form['finish_date'], "%Y-%m-%d").date()
                 supervisor_id = request.form['supervisor_id']
                 worker_ids = request.form.getlist('workers')
-
                 supervisor = db.session.get(User, supervisor_id)
                 workers = [db.session.get(User, int(uid)) for uid in worker_ids]
 
@@ -53,6 +54,10 @@ class ProjectController:
                         assigned_workers=workers
                     )
 
+                if start_date > finish_date:
+                    flash("Start date cannot be later than finish date.", "danger")
+                    return render_template("project/create_project.html", supervisors=all_users, workers=workers)
+
                 db.session.add(new_project)
                 db.session.commit()
                 return redirect(url_for('project.list_projects'))
@@ -61,7 +66,7 @@ class ProjectController:
                  db.session.rollback()
                  flash("Error creating project: " + str(e), "danger")
 
-        all_users = User.query.all()
+
         return render_template('project/create_project.html', supervisors=all_users, workers=all_users)
 
     def list_projects(self):

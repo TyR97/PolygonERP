@@ -12,7 +12,7 @@ from polygonerp.utils.auth_utils import generate_username
 class AuthTestCase(TestCase):
 
     def create_app(self):
-        app = create_app('testing')  # Set the config to testing mode
+        app = create_app('testing')
 
         return app
 
@@ -68,7 +68,7 @@ class AuthTestCase(TestCase):
             "job_title" : "teszt",
             "base_pay" : "100",
             }, follow_redirects=True)
-        self.assertIn(b'"User added successfully!"', response.data)
+        self.assertIn(b'User added successfully!', response.data)
 
 
 

@@ -74,8 +74,6 @@ def time_log_to_doc(logs, user_name):
     list_dir = os.path.join(current_app.root_path, 'static/docs')
     full_path = os.path.join(list_dir, filename)
 
-    if not os.path.exists(full_path):
-        print("Not found")
 
     doc.save(os.path.join(current_app.root_path, 'static', 'docs', f'{user_name}_time_sheet.docx'))
     return send_file(full_path, as_attachment=True)
@@ -111,6 +109,6 @@ def find_user_contract(user):
     full_path = os.path.join(contracts_dir, filename)
 
     if not os.path.exists(full_path):
-        print("Not found")
+        raise FileNotFoundError("Cannot find contract file!")
 
     return send_file(full_path, as_attachment=True)

@@ -1,16 +1,15 @@
 from flask import (
-    Blueprint, g, redirect, render_template, request, session, url_for, flash
+    g, redirect, render_template, session, url_for, flash
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from polygonerp.forms.login_form import LoginForm
 from polygonerp.models.user import User
 from polygonerp.db import db
-from polygonerp.forms.password_change_form import ChangePasswordForm, ChangePasswordWithUsernameForm
+from polygonerp.forms.password_change_form import ChangePasswordForm
 from polygonerp.forms.user_form import UserForm
 
 from polygonerp.utils.auth_utils import generate_username, generate_password
-from polygonerp.utils.decorators_util import admin_required
 from polygonerp.utils.email_utils import send_new_employee_notification, send_firs_login_notification
 from polygonerp.utils.doc_utils import create_contract
 
@@ -118,15 +117,9 @@ class AuthController:
                 return redirect(url_for('dashboard.dashboard'))
 
             return render_template('auth/new_password.html', form=form)
-        #TODO CHANGE ASPA
-        def forgot_password(self):
-            form = ChangePasswordWithUsernameForm()
-            if form.validate_on_submit():
-                user = User.query.filter_by(username=form.username.data).first()
-                user.password_hash = generate_password_hash(form.password.data)
-                db.session.commit()
-                return redirect(url_for('auth.login'))
 
-            return render_template('auth/forgot_password.html', form=form)
+
+        def forgot_password(self):
+            return render_template('auth/forgot_password.html')
 
 

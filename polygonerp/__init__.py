@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, Blueprint
 from flask_mail import Mail
+from werkzeug.security import generate_password_hash
 
 from polygonerp.controllers import dashboard_controller
 from polygonerp.controllers.auth_controller import AuthController
@@ -43,12 +44,6 @@ def create_app(testing=None):
     mail.init_app(app)
     init_app(app)
 
-    #init_project_controller(app)
-    #init_user_controller(app)
-    #auth_controller = AuthController(app)
-    #app.register_blueprint(project_bp)
-    #app.register_blueprint(user_bp)
-
     auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
     AuthController(auth_bp, app)
     app.register_blueprint(auth_bp)
@@ -64,6 +59,31 @@ def create_app(testing=None):
     project_bp = Blueprint('project', __name__, url_prefix='/project')
     ProjectController(project_bp, app)
     app.register_blueprint(project_bp)
+
+    with app.app_context():
+        if not User.query.first():
+            print("Let there be User")
+            user = User(
+                username="admin",
+                password_hash=generate_password_hash("password"),
+                name="Admin Admin",
+                maiden_name=" ",
+                mothers_name=" ",
+                pob=" ",
+                dob=" ",
+                address=" ",
+                tax_num="0000000000",
+                taj_number="000000000",
+                job_title="Sysadmin",
+                base_pay="1",
+                email_address="admin@PolygonERP.com",
+                is_admin=True,
+                first_login=False
+            )
+            db.session.add(user)
+            db.session.commit()
+        else:
+            pass
 
 
 

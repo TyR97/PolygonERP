@@ -44,7 +44,11 @@ class DashboardController:
     def download_contract(self, user_id):
         user = User.query.get_or_404(user_id)
         if user == g.user or g.user.is_admin:
-            return find_user_contract(user)
+            try:
+                return find_user_contract(user)
+            except FileNotFoundError as e:
+                flash(str(e), 'danger')
+                return redirect(url_for('dashboard.profile_view', user_id=user_id))
         else:
             return redirect(url_for('dashboard.profile_view', user_id=user_id))
 

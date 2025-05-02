@@ -414,3 +414,37 @@ img {
     flex-direction: column;
     align-items: center;
   }
+
+.profile_buttons{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.assign_workers_card{
+    font-family: "JetBrains Mono", Inter, system-ui, sans-serif;
+    background-color: rgba(25, 25, 28, 0.5);
+    color: rgba(255, 255, 255, 1);
+    width: 18.75rem;
+    height: 19rem;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.assign_workers_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.assign_workers_card{
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  border: 2px solid #a076f9;
+  background: transparent;
+  color: white;
+}
